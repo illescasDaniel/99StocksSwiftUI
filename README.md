@@ -16,6 +16,7 @@ Little project that fetches a list of companies, sort them by their share price 
 **Screenshots**
 -------
 <img src="github/screenshots.png" width="800">
+[**Video demo**](https://www.linkedin.com/feed/update/urn:li:activity:6543596406219816960)
 
 # Resources #
 
