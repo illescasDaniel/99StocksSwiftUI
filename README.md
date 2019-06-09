@@ -4,6 +4,8 @@
 
 Little project that fetches a list of companies, sort them by their share price and can show its details on a separate view.
 
+**Note:** You need **Xcode 11** to run this app.
+
 **Technical Features**
 ----
 - [**SwiftUI**](https://developer.apple.com/xcode/swiftui/) | Latest Apple multiplatform UI framework
