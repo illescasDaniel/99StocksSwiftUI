@@ -1,5 +1,5 @@
 strings:
-  inputs: "../99_Companies/Resources/en.lproj/Localizable.strings"
+  inputs: "../99_Stocks/Resources/en.lproj/Localizable.strings"
   outputs:
     templatePath: "./sourcery/swiftgen/structured-swift5.stencil"
-    output: "../99_Companies/Resources/Localization.swift"
+    output: "../99_Stocks/Resources/Localization.swift"

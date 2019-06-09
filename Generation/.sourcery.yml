@@ -1,0 +1,6 @@
+sources:
+  - ../99_Stocks
+templates:
+  - sourcery/APIConfig
+output:
+  ../99_Stocks/GeneratedCode

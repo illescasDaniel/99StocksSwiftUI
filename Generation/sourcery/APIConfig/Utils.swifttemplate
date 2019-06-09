@@ -1,0 +1,49 @@
+<%
+extension StringProtocol {
+	var firstUppercased: String {
+		return prefix(1).uppercased() + dropFirst()
+	}
+	var firstCapitalized: String {
+		return prefix(1).capitalized + dropFirst()
+	}
+}
+extension String {
+	var firstParentName: String {
+		guard let name = self.split(separator: ".").first else {
+			return self
+		}
+		return String(name)
+	}
+}
+func commaSeparatedContent<T>(from values: [T?], parenthesis: Bool, contentHandler: (T) -> String) -> String {
+	var output = ""
+	for (index, value_) in values.enumerated() {
+		guard let value = value_ else { continue }
+		if index == 0 && parenthesis {
+			output += "("
+		}
+		output += contentHandler(value)
+		if index < (values.count - 1) {
+			output += ", "
+		} else if parenthesis {
+			output += ")"
+		}
+	}
+	return output
+}
+func caseParameter(_ enumCase: EnumCase) -> String {
+	return commaSeparatedContent(from: enumCase.associatedValues.map { $0.localName }, parenthesis: true) { localName in
+		"let \(localName)"
+	}
+}
+func caseFunctionParameters(_ enumCase: EnumCase) -> String {
+	return commaSeparatedContent(from: enumCase.associatedValues, parenthesis: false) { associatedValue in
+		"\(associatedValue.localName ?? ""): \(associatedValue.typeName)"
+	}
+}
+func caseMatchingFunctionParameters(_ enumCase: EnumCase) -> String {
+	return commaSeparatedContent(from: enumCase.associatedValues.map { $0.localName }, parenthesis: true) { localName in
+		"\(localName): \(localName)"
+	}
+}
+-%>

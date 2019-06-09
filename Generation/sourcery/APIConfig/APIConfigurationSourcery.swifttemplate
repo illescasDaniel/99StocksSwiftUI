@@ -1,0 +1,109 @@
+<%- include("Utils.swifttemplate") %>
+
+import Foundation
+import Combine
+
+<%_ for aType in types.implementing["APIConfiguration"] where aType is Enum { -%>
+<%_ let enumType = aType as! Enum -%>
+// MARK: - <%= aType.name %>
+
+<%= aType.accessLevel %> extension <%= aType.name %> {
+
+	var baseURL: URLConvertible {
+		<%_ if let url = aType.annotations["url"] as? String { -%>
+		return "<%= url %>"
+		<%_ } -%>
+		<%_ else { -%>
+		#error("You must provide a URL")
+		<%_ } -%>
+	}
+
+	var method: HTTPMethod {
+		switch self {
+		<%_ for aCase in enumType.cases { -%>
+		case .<%= aCase.name %>:
+			return .<%= (aCase.annotations["method"] as? String)?.lowercased() ?? "get" %>
+		<%_ } -%>
+		}
+	}
+
+	var path: String {
+		switch self {
+		<%_ for aCase in enumType.cases { -%>
+		<%_ if let path = aCase.annotations["path"] as? String { -%>
+		case .<%= aCase.name %><%= caseParameter(aCase) %>:
+			return "<%= path %>"
+		<%_ } else { -%>
+		case .<%= aCase.name %>:
+			return "/"
+		<%_ } -%>
+		<%_ } -%>
+		}
+	}
+
+	var queryItems: [URLQueryItem] {
+		switch self {
+		<%_ for aCase in enumType.cases { -%>
+		<%_ if (aCase.annotations["method"] as? String) == "GET" { -%>
+		case .<%= aCase.name %><%= caseParameter(aCase) %>:
+			<%_ if let queryParams = aCase.annotations["queryParams"] { -%>
+			let rawQueryItems = <%= queryParams %>
+			<%_ } else { -%>
+			let rawQueryItems: [String: String] = [:]
+			<%_ } -%>
+			var mappedItems: [String: String] = []
+			<%_ for parameterName in aCase.associatedValues.compactMap({ $0.localName as? String }) ?? [] { -%>
+			mappedItems[rawQueryItems["<%= parameterName %>", default: "<%= parameterName %>"]] = String(describing: <%= parameterName %>)
+			<%_ } -%>
+			return mappedItems.map { URLQueryItem(name: $0.key, value: String(describing: $0.value)) }
+		<%_ } else { -%>
+		case .<%= aCase.name %>:
+			return []
+		<%_ } -%>
+		<%_ } -%>
+		}
+	}
+
+	var bodyParameters: [String : Any]? {
+		switch self {
+		<%_ for aCase in enumType.cases { -%>
+			<%_ if (aCase.annotations["method"] as? String) == "POST" { -%>
+			case .<%= aCase.name %><%= caseParameter(aCase) %>:
+				<%_ if let bodyParams = aCase.annotations["bodyParams"] { -%>
+				let rawBodyParams = <%= bodyParams %>
+				<%_ } else { -%>
+				let rawBodyParams: [String: String] = [:]
+				<%_ } -%>
+				var mappedParams: [String: Any] = []
+				<%_ for parameterName in aCase.associatedValues.compactMap({ $0.localName as? String }) ?? [] { -%>
+				mappedParams[rawBodyParams["<%= parameterName %>", default: "<%= parameterName %>"]] = <%= parameterName %>
+				<%_ } -%>
+				return mappedParams
+			<%_ } else { -%>
+			case .<%= aCase.name %>: return nil
+			<%_ } -%>
+		<%_ } -%>
+		}
+	}
+}
+
+// MARK: [API Client] protocol and extension
+
+// By creating this protocol, we could create a mock APIClient (or just another api client in general) that implements
+// these methods
+protocol <%= (aType.parentName ?? "").replacingOccurrences(of: ".", with: "") %>ApiClientProtocol {
+<%_ for aCase in enumType.cases where aCase.annotations["response"] != nil { -%>
+	<%_ guard let response = aCase.annotations["response"] as? String else { continue } -%>
+	static func <%= aCase.name %>(<%= caseFunctionParameters(aCase) %>) -> AnyPublisher<<%= response %>, Error>
+<%_ } -%>
+}
+
+extension <%= aType.parentName ?? "" %>.ApiClient: <%= (aType.parentName ?? "").replacingOccurrences(of: ".", with: "") %>ApiClientProtocol {
+	<%_ for aCase in enumType.cases where aCase.annotations["response"] != nil { -%>
+	<%_ guard let response = aCase.annotations["response"] as? String else { continue } -%>
+	static func <%= aCase.name %>(<%= caseFunctionParameters(aCase) %>) -> AnyPublisher<<%= response %>, Error> {
+		return self.request(.<%= aCase.name %><%= caseMatchingFunctionParameters(aCase) %>)
+	}
+	<%_ } -%>
+}
+<%_ } -%>

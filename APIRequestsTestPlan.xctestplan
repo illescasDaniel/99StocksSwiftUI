@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:99_Stocks.xcodeproj",
+        "identifier" : "65B48AB222AAC72A00BE9832",
+        "name" : "99_StocksTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:99_Stocks.xcodeproj",
+        "identifier" : "658E93A822AD6A36008CCC32",
+        "name" : "StocksUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

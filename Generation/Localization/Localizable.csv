@@ -1,4 +1,5 @@
 Key;en;es
 Sections.Companies.Label.title;99_Stocks;99_Bolsa
+Sections.Companies.Label.emptyResults;Empty;Vacío
 Sections.Companies.Button.reload;Reload;Recargar
 Sections.Companies.TextField.search;Search;Buscar
