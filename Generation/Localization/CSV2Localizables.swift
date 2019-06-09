@@ -113,7 +113,7 @@ extension CSV2Localizables {
 
 //
 
-let projectName = "99_Companies"
+let projectName = "99_Stocks"
 let projectBaseURL = URL(fileURLWithPath: "/Users/daniel/Documents/Programming/IDE Projects/Xcode/Projects/- TestProjects/\(projectName)", isDirectory: true) 
 
 //
