@@ -10,7 +10,7 @@ Little project that fetches a list of companies, sort them by their share price 
 ----
 - [**SwiftUI**](https://developer.apple.com/xcode/swiftui/) | Latest Apple multiplatform UI framework
 - [**Combine**](https://developer.apple.com/documentation/combine) | Declarative API for processing values over time (similar to RxSwift)
-- [**Sourcery**](https://github.com/krzysztofzablocki/Sourcery) | A utility for code generation from app assets (in this case, Localizable.strings)
+- [**Sourcery**](https://github.com/krzysztofzablocki/Sourcery) | A utility for code generation from custom templates
 - [**Swiftgen**](https://www.github.com/SwiftGen/SwiftGen) | A utility for code generation from app assets (in this case, Localizable.strings)
 - [**CSV2Localizables**](https://github.com/illescasDaniel/99StocksSwiftUI/blob/master/Generation/Localization/CSV2Localizables.swift) | Small personal tool to generate from a CSV a Localizable.strings file for each language
 - [**@propertyWrapper**](https://medium.com/better-programming/swift-property-delegates-powerful-new-annotations-attributes-system-2e3968b29624) | Annotate properties and do magical things ;). Check [my article](https://medium.com/better-programming/swift-property-delegates-powerful-new-annotations-attributes-system-2e3968b29624) about it.
