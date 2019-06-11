@@ -66,7 +66,7 @@ class StocksAPITests: XCTestCase {
 	
 	// MARK: - Convenience
 	
-	private func fetchCompanies(onNext: @escaping ([Company.Model.ListEntryResponse]) -> Void, onError: @escaping (Error) -> Void) {
+	private func fetchCompanies(onNext: @escaping ([Company.Model.ItemListResponse]) -> Void, onError: @escaping (Error) -> Void) {
 		_ = Company.Network.ApiClient.companies().sink(receiveCompletion: { completion in
 			switch completion {
 			case .failure(let error):
