@@ -5,6 +5,7 @@
 Little project that fetches a list of companies, sort them by their share price and can show its details on a separate view.
 
 **Note:** You need **Xcode 11** to run this app.
+**Note:** Tested in Xcode 11 Beta 1. TODO: test on later releases.
 
 **Technical Features**
 ----

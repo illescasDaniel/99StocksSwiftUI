@@ -57,7 +57,7 @@ class CSV2Localizables {
 			var languagesDictionary: [LanguageId: Content] = [:]
 			for (language, linePart) in zip(languages, lineParts.dropFirst()) {
 				let languageId = String(language)
-				languagesDictionary[languageId] = scape(text: String(linePart))
+				languagesDictionary[languageId] = escape(text: String(linePart))
 			}
 			
 			let key = String(lineParts[0])
@@ -67,7 +67,7 @@ class CSV2Localizables {
 		return translationsOutput
 	}
 	
-	private func scape(text: String) -> String {
+	private func escape(text: String) -> String {
 		let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
 		let trimmedQuotes = trimmed.replacingOccurrences(of: "\"", with: #"\""#)
 		let trimmedSeparator = trimmedQuotes.replacingOccurrences(of: String(options.columnSeparator), with: "_")
