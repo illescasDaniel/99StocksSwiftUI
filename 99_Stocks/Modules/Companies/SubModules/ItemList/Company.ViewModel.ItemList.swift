@@ -12,7 +12,7 @@ import Combine
 
 extension Company.ViewModel {
 	
-	final class ItemList: BindableObject {
+	final class ItemList: ObservableObject {
 		
 		// MARK: - Properties
 		
@@ -87,31 +87,31 @@ extension Company.ViewModel {
 		private func fetchCompanies() {
 			_ = Company.Network.ApiClient.companies().map { response in
 					response.map { Company.Model.ItemList(id: $0.id, name: $0.name, stockName: $0.stockName, sharePrice: $0.sharePrice) }
-				}.sink { (result) in
-					DispatchQueue.main.async {
-						self.data = result.sorted(by: >)
-						/// Updates the stockState dictionary accordingly, so it later changes the share price colors in the view
-						if self.stockState.isEmpty {
-							for company in self.data {
-								self.stockState[company.id] = (.neutral, company.sharePrice)
-							}
-						} else {
-							for company in self.data {
-								if let (previousStockState, previousPrice) = self.stockState[company.id] {
-									if company.sharePrice == previousPrice && previousStockState != .neutral {
-										self.stockState[company.id] = (.neutral, company.sharePrice)
-									}
-									else if company.sharePrice > previousPrice && previousStockState != .up {
-										self.stockState[company.id] = (.up, company.sharePrice)
-									}
-									else if company.sharePrice < previousPrice && previousStockState != .down {
-										self.stockState[company.id] = (.down, company.sharePrice)
-									}
+			}.sink(receiveCompletion: { _ in }, receiveValue: { result in
+				DispatchQueue.main.async {
+					self.data = result.sorted(by: >)
+					/// Updates the stockState dictionary accordingly, so it later changes the share price colors in the view
+					if self.stockState.isEmpty {
+						for company in self.data {
+							self.stockState[company.id] = (.neutral, company.sharePrice)
+						}
+					} else {
+						for company in self.data {
+							if let (previousStockState, previousPrice) = self.stockState[company.id] {
+								if company.sharePrice == previousPrice && previousStockState != .neutral {
+									self.stockState[company.id] = (.neutral, company.sharePrice)
+								}
+								else if company.sharePrice > previousPrice && previousStockState != .up {
+									self.stockState[company.id] = (.up, company.sharePrice)
+								}
+								else if company.sharePrice < previousPrice && previousStockState != .down {
+									self.stockState[company.id] = (.down, company.sharePrice)
 								}
 							}
 						}
 					}
-			}
+				}
+			})
 		}
 		
 		private func reloadEvery(_ timeInterval: TimeInterval) {

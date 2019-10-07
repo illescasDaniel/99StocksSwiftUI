@@ -23,7 +23,7 @@ public extension APIClient {
 				.decode(type: RequestType.self, decoder: JSONDecoder())
 				.eraseToAnyPublisher()
 		case .failure(let urlRequestError):
-			return Publishers.Fail(error: urlRequestError).eraseToAnyPublisher()
+			return Fail(error: urlRequestError).eraseToAnyPublisher()
 		}
 	}
 }

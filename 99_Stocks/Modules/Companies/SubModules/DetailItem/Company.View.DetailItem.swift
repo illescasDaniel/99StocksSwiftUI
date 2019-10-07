@@ -39,7 +39,7 @@ extension Company.View {
 							Text(self.companyDetailsVM.company.sharePrice.currencyFormatted)
 								.font(.system(.title, design: .monospaced))
 								.fontWeight(.bold)
-								.color(self.companyDetailsVM.stockState.color)
+								.foregroundColor(self.companyDetailsVM.stockState.color)
 						}
 						Text(self.companyDetailsVM.company.description)
 							.font(.body)

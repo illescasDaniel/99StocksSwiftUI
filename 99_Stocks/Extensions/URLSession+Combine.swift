@@ -20,9 +20,9 @@ extension URLSession {
 
 extension CombineExtension where Base == URLSession {
 	
-	func send(request: URLRequest) -> Publishers.Future<Data, URLSessionError> {
-		
-		Publishers.Future<Data, URLSessionError> { [base] subscriber in
+	func send(request: URLRequest) -> Future<Data, URLSessionError> {
+	
+		Future<Data, URLSessionError> { [base] subscriber in
 			
 			let task = base.dataTask(with: request) { data, response, error in
 				

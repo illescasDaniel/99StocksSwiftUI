@@ -22,7 +22,7 @@ extension Company.View {
 						.font(.headline)
 					Text(company.stockName)
 						.font(.footnote)
-						.color(.gray)
+						.foregroundColor(.gray)
 				}
 				Spacer()
 				HStack {
@@ -33,10 +33,10 @@ extension Company.View {
 						.foregroundColor(self.stockState.color)
 					Text(company.sharePrice.currencyFormatted)
 						.font(.system(.headline, design: .monospaced))
-						.color(self.stockState.color)
+						.foregroundColor(self.stockState.color)
 				}
-				}
-				.padding(.vertical, 8)
+			}
+			.padding(.vertical, 8)
 		}
 	}
 }

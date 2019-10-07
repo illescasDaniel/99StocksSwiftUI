@@ -18,12 +18,13 @@ extension Company.View {
 		var body: some View {
 			NavigationView {
 				VStack(spacing: 16) {
-					TextField($companies.searchText, placeholder: Text(L10n.Sections.Companies.TextField.search),
-							  onCommit: onTextFieldCommit)
+					TextField(L10n.Sections.Companies.TextField.search, text: $companies.searchText, onCommit: onTextFieldCommit)
 						.frame(height: 40)
 						.padding(.horizontal, 16)
-						.border(Color.gray, cornerRadius: 12)
+						.border(Color.gray)
+						.cornerRadius(12)
 						.padding(.horizontal, 12)
+					
 					if (companies.realData.isEmpty) {
 						Spacer()
 						if companies.searchText.isEmpty {
@@ -35,7 +36,7 @@ extension Company.View {
 						Spacer()
 					} else {
 						List(companies.realData) { (company: Company.Model.ItemList) in
-							NavigationButton(destination: Company.Router.DetailItem.instance(companyId: company.id)) {
+							NavigationLink(destination: Company.Router.DetailItem.instance(companyId: company.id)) {
 								Company.View.ListItem(company: company,
 													  stockState: self.companies.stockState(for: company.id))
 							}

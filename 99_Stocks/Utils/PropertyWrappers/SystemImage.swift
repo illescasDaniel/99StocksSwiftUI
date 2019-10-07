@@ -14,7 +14,7 @@ struct SystemImage {
 	init(_ name: String) {
 		self.name = name
 	}
-	var value: Image {
+	var wrappedValue: Image {
 		return Image(systemName: name)
 	}
 }

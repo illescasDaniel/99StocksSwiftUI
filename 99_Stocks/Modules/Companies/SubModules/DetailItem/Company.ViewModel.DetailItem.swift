@@ -12,7 +12,7 @@ import Combine
 
 extension Company.ViewModel {
 	
-	final class DetailItem: BindableObject {
+	final class DetailItem: ObservableObject {
 		
 		internal let didChange = PassthroughSubject<Company.ViewModel.DetailItem, Never>()
 		
@@ -59,27 +59,27 @@ extension Company.ViewModel {
 		private func fetchCompanyById() {
 			_ = Company.Network.ApiClient.company(id: self.companyId).map {
 				Company.Model.DetailItem(id: $0.id, name: $0.name, stockName: $0.stockName, sharePrice: $0.sharePrice, description: $0.description, country: $0.country)
-				}.sink { (result) in
-					DispatchQueue.main.async {
-						self.data = result
-						if let previousStock = self.previousStock {
-							if result.sharePrice == previousStock.price && previousStock.state != .neutral {
-								self.previousStock = (.neutral, result.sharePrice)
-								self.stockState = .neutral
-							} else if result.sharePrice > previousStock.price && previousStock.state != .up {
-								self.previousStock = (.up, result.sharePrice)
-								self.stockState = .up
-							} else if result.sharePrice < previousStock.price && previousStock.state != .down {
-								self.previousStock = (.down, result.sharePrice)
-								self.stockState = .down
-							}
-						} else {
+			}.sink(receiveCompletion: { _ in }, receiveValue: { result in
+				DispatchQueue.main.async {
+					self.data = result
+					if let previousStock = self.previousStock {
+						if result.sharePrice == previousStock.price && previousStock.state != .neutral {
 							self.previousStock = (.neutral, result.sharePrice)
+							self.stockState = .neutral
+						} else if result.sharePrice > previousStock.price && previousStock.state != .up {
+							self.previousStock = (.up, result.sharePrice)
+							self.stockState = .up
+						} else if result.sharePrice < previousStock.price && previousStock.state != .down {
+							self.previousStock = (.down, result.sharePrice)
+							self.stockState = .down
 						}
-						let previousCount = self.sharePrices.count
-						self.sharePrices.append((x: previousCount, y: result.sharePrice))
+					} else {
+						self.previousStock = (.neutral, result.sharePrice)
 					}
-			}
+					let previousCount = self.sharePrices.count
+					self.sharePrices.append((x: previousCount, y: result.sharePrice))
+				}
+			})
 		}
 		
 		private func reloadEvery(_ timeInterval: TimeInterval) {

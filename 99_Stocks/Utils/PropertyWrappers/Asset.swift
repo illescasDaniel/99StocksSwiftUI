@@ -25,7 +25,7 @@ struct Asset<AssetType: AssetProtocol> {
 		self.bundle = bundle
 	}
 	
-	var value: AssetType {
+	var wrappedValue: AssetType {
 		return AssetType(self.name, bundle: self.bundle)
 	}
 }
