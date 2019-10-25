@@ -4,7 +4,7 @@
 
 Little project that fetches a list of companies, sort them by their share price and can show its details on a separate view.
 
-**Note:** This project fetches data from a network endpoint that seems to be **no longer available**, so this project just serves a my first little adventure with SwiftUI :)
+**Note:** This project fetches data from an endpoint that seems to be **no longer available**, so this project just serves a my first little adventure with SwiftUI :)
 
 **Technical Features**
 ----
